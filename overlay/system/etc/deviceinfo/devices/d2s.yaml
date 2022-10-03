@@ -2,5 +2,5 @@ d2s:
   PrettyName: Samsung Galaxy Note 10+
   DeviceType: phone
   DoubleTapToWake:
-    - /sys/class/sec/tsp/cmd_ut_aod_enable|1|0
-    - /sys/class/sec/tsp/cmd_ut_set_aod_rect|1440x2560|0x0
+    - /sys/class/sec/tsp/cmd|aod_enable|1
+    - /sys/class/sec/tsp/cmd|set_aod_rect|1440,3040|0,0
