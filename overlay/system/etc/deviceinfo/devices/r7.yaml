@@ -1,0 +1,6 @@
+r7:
+  PrettyName: Samsung Galaxy Note10 Lite
+  DeviceType: phone
+  DoubleTapToWake:
+    - /sys/class/sec/tsp/cmd|aod_enable|1
+    - /sys/class/sec/tsp/cmd|set_aod_rect|1440,3040|0,0
