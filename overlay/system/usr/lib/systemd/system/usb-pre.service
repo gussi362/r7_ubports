@@ -2,5 +2,5 @@
 Description=exynosUSB
 
 [Service]
-Type=notify
+Type=oneshot
 ExecStart=/usr/libexec/usb-moded/usb-exy.sh pre
