@@ -1,0 +1,6 @@
+[Unit]
+Description=exynosUSB
+
+[Service]
+Type=notify
+ExecStart=/usr/libexec/usb-moded/usb-exy.sh post

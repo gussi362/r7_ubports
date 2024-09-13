@@ -188,11 +188,11 @@ mount_android_partitions() {
 		path="/dev/$label"
 		for dir in by-partlabel by-name by-label by-path by-uuid by-partuuid by-id; do
 			# On A/B systems not all of the partitions are duplicated, so we have to check with and without suffix
-			if [ -e "/dev/block/$dir/$label$ab_slot_suffix" ]; then
-				path="/dev/block/$dir/$label$ab_slot_suffix"
+			if [ -e "/dev/disk/$dir/$label$ab_slot_suffix" ]; then
+				path="/dev/disk/$dir/$label$ab_slot_suffix"
 				break
-			elif [ -e "/dev/block/$dir/$label" ]; then
-				path="/dev/block/$dir/$label"
+			elif [ -e "/dev/disk/$dir/$label" ]; then
+				path="/dev/disk/$dir/$label"
 				break
 			fi
 		done
@@ -524,9 +524,9 @@ mountroot() {
 	mount -o discard,$OPTIONS $path /tmpmnt
 
 	# setup super partition if exists
-	if [ -n "/dev/block/by-name/super" ]; then
+	if [ -n "/dev/disk/by-partlabel/super" ]; then
 		tell_kmsg "trying to parse and dmsetup subpartitions from super partition"
-		/sbin/parse-android-dynparts /dev/block/by-name/super | sh
+		/sbin/parse-android-dynparts /dev/disk/by-partlabel/super | sh
 		dmsetup mknodes
 	fi
 
