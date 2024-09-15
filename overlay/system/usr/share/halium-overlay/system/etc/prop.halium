@@ -1,0 +1,8 @@
+# Model for libdeviceinfo
+ro.product.vendor.device=r7
+# Camera model for taken pictures
+ro.product.model=Note 10 Lite
+# MTP device name
+ro.product.vendor.model=Note 10 Lite
+# Manufacturer in host dmesg
+ro.product.vendor.manufacturer=samsung

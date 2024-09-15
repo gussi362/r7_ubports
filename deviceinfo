@@ -25,5 +25,7 @@ deviceinfo_kernel_separated_dt="false"
 deviceinfo_bootimg_prebuilt_dtb="dtb.img"
 deviceinfo_ramdisk_compression="gzip"
 deviceinfo_halium_version="12"
-deviceinfo_prebuilt_boot_ramdisk_source="https://github.com/halium/initramfs-tools-halium/releases/download/dynparts/initrd.img-touch-arm64"
-
+deviceinfo_system_partition_size="259493888"
+#workspace change with keyboard ots 
+#deviceinfo_prebuilt_boot_ramdisk_source="https://github.com/halium/initramfs-tools-halium/releases/download/dynparts/initrd.img-touch-arm64"
+deviceinfo_prebuilt_boot_ramdisk_source="http://localhost/initrd.img-touch-arm64"
