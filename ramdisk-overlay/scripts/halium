@@ -404,6 +404,12 @@ process_bind_mounts() {
 	done
 }
 
+mount_extra()
+{
+	tell_kmsg "mounting $2 ($1) partition to /android/$2"
+	mount -o ro $1 ${rootmnt}/android/$2
+}
+
 extract_android_ramdisk() {
 	# Extracts the ramdisk from /android-system/boot/android-ramdisk.img to
 	# /android-rootfs
@@ -586,6 +592,49 @@ mountroot() {
 		mount -o bind /tmpmnt/halium-rootfs /halium-system
 	fi
 	
+
+#after mounting halium and android we want samsung efs
+  	mount -o loop,rw /halium-system/var/lib/lxc/android/android-rootfs.img /halium-system
+	if ! [ -e /halium-system/.init_done ]
+	then
+		# create samsung mountpoints in android image
+#		mkdir -p /halium-system/efs \
+#			/halium-system/sec_efs \
+#			/halium-system/prism \
+#			/halium-system/keyrefuge \
+#			/halium-system/optics \
+#			/halium-system/cpefs \
+#			/halium-system/modem \
+#			/halium-system/keydata \
+#			/halium-system/spu \
+#			/halium-system/misc \
+#			/halium-system/firmware \
+#			/halium-system/omr \
+#			/halium-system/keystorage \
+#			/halium-system/dtbo \
+
+		
+		touch /halium-system/.init_done
+		umount /halium-system
+
+		# create symlinks
+		ln -s /android/efs /halium-system/efs
+		ln -s /android/cpefs /halium-system/cpefs
+		ln -s /android/prism /halium-system/prism
+		ln -s /android/keyrefuge /halium-system/keyrefuge
+		ln -s /android/keydata /halium-system/keydata
+		ln -s /android/modem /halium-system/modem
+		ln -s /android/optics /halium-system/optics
+		ln -s /android/spu /halium-system/spu
+		ln -s /android/omr /halium-system/omr
+		ln -s /android/misc /halium-system/misc
+		ln -s /android/vendor/firmware/ /halium-system/firmware
+		ln -s /android/keystorage/ /halium-system/keystorage
+		ln -s /android/dtbo/ /halium-system/dtbo
+	else
+		umount /halium-system
+	fi
+
 	# Identify image mode: either "rootfs" or "system"
 	mkdir -p /android-rootfs
 	mkdir -p /android-system
@@ -692,8 +741,41 @@ mountroot() {
 		[ $ANDROID_IMAGE_MODE = "system" ] && mount -o rw,size=4096 -t tmpfs none ${rootmnt}/android
 		[ $ANDROID_IMAGE_MODE = "rootfs" ] && mount -o bind ${rootmnt}/var/lib/lxc/android/rootfs ${rootmnt}/android
 
+
+		# do extra mount
+
+		# Mount extra partitionoptics
+	#	if [ ! -e ${rootmnt}/userdata/efs ]; then
+#			mount_extra /dev/sda2 efs#
+#			cp -a ${rootmnt}/android/efs ${rootmnt}/userdata/efs
+#			cp -a ${rootmnt}/android/vendor/firmware ${rootmnt}/userdata/firmware
+#			cp -a ${rootmnt}/android/vendor/firmware ${rootmnt}/android/firmware
+
+#			umount ${rootmnt}/android/efs
+#		fi
+		mount_extra /dev/sda2 efs
+		#mount_extra /dev/sda2 efs
+		#mount -o bind ${rootmnt}/userdata/efs ${rootmnt}/android/efs
+		mount_extra /dev/sdd1 cpefs
+		mount_extra /dev/sda3 param
+		mount_extra /dev/sda27 optics
+		mount_extra /dev/sda18 misc
+		mount_extra /dev/sda19 keyrefuge
+		#mount_extra /dev/sda20 keydata
+		mount_extra /dev/sda14 modem
+		mount_extra /dev/sda26 prism
+		mount_extra /dev/sda30 spu
+		mount_extra /dev/sda29 omr
+		#
+		mount_extra /dev/sda10 dtbo
+		mount_extra /dev/sda6 keystorage
+
+
+		#end do extra mount
 		mkdir -p ${rootmnt}/android/data ${rootmnt}/android/system
 
+	
+		#
 		# Create a fake android data, shared by rootfs and LXC container
 		mkdir -p ${rootmnt}/userdata/android-data
 		mount -o bind ${rootmnt}/userdata/android-data ${rootmnt}/android/data
@@ -710,7 +792,7 @@ mountroot() {
 
 		# Mount all the Android partitions
 		mount_android_partitions "${rootmnt}/var/lib/lxc/android/rootfs/fstab*" ${rootmnt}/android ${rootmnt}/userdata
-
+		
 		# system is a special case
 		tell_kmsg "moving Android system to /android/system"
 		mount --move /android-system ${rootmnt}/android/system

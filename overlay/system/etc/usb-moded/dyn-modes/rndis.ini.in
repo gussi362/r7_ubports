@@ -1,0 +1,11 @@
+[mode]
+name = rndis
+module = none
+network = 0 # Will be dealt by NetworkManager
+appsync = 1 # Launches tethering script
+
+[options]
+# sysfs_value = comma separated list of functions to enable in this mode
+sysfs_value = adb
+idProduct = $IDPRODUCT_RNDIS
+dhcp_server = 0 # tethering script will handle this via NM.

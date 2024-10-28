@@ -1,0 +1,11 @@
+[mode]
+name = mtp_adb
+module = none
+appsync = 1 # Launches ADBD
+
+[options]
+# sysfs_value = comma separated list of functions to enable in this mode
+sysfs_value = mtp,adb
+android_extra_sysfs_path =  /sys/class/android_usb/android0/f_ffs/aliases
+android_extra_sysfs_value = adb
+idProduct = $IDPRODUCT_MTP_ADB

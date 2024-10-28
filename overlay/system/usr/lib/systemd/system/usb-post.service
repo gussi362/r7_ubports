@@ -1,6 +1,0 @@
-[Unit]
-Description=exynosUSB
-
-[Service]
-Type=oneshot
-ExecStart=/usr/libexec/usb-moded/usb-exy.sh post
