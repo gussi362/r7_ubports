@@ -10,3 +10,9 @@ chmod 666 /sys/class/camera/flash/rear_flash
 chown phablet:android_input /sys/class/leds/fled-s2mu106/brightness
 chmod phablet:android_input /sys/class/leds/fled-s2mu106/brightness
 
+#enable fingerprint
+echo "fod_enable,1" > /sys/class/sec/tsp/cmd
+#use old dt2w function
+echo "aot_enable,1" > /sys/class/sec/tsp/cmd
+
+
