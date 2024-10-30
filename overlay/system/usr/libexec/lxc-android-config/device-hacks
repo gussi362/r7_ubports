@@ -33,4 +33,46 @@ nmcli device set p2p0 managed false
 while [ "$(getprop init.svc.vendor.usb-hal-1-1)" != "running" ]; do sleep 0.5; done
 while [ "$(getprop init.svc.vendor.light-default)" != "running" ]; do sleep 0.5; done
 
+    mkdir /sys/kernel/config//usb_gadget/g1
+    mkdir /sys/kernel/config//usb_gadget/g1/strings/0x409
+    mkdir /sys/kernel/config//usb_gadget/g1/configs/c.1
+    mkdir /sys/kernel/config//usb_gadget/g1/configs/c.1/strings/0x409
+   mkdir /sys/kernel/config//usb_gadget/g1/functions/mtp.0
+   mkdir /sys/kernel/config//usb_gadget/g1/functions/ptp.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/acm.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/uts.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/dm.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/rndis.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/conn_gadget.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/midi.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/accessory.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/audio_source.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/ncm.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/ss_mon.0
 
+    mkdir /sys/kernel/config/usb_gadget/g1/functions/ffs.adb
+    mkdir /sys/kernel/config/usb_gadget/g1/functions/ffs.mtp
+    echo "Conf 1" > /sys/kernel/config/usb_gadget/g1/configs/c.1/strings/0x409/configuration 
+    echo "0x384"  > /sys/kernel/config/usb_gadget/g1/configs/c.1/MaxPower
+
+    ln -s /sys/kernel/config/usb_gadget/g1/functions/acm.0 /sys/kernel/config/usb_gadget/g1/configs/c.1/acm.0
+    ln -s /sys/kernel/config/usb_gadget/g1/functions/rndis.0 /sys/kernel/config/usb_gadget/g1/configs/c.1/rndis.0
+    ln -s /sys/kernel/config/usb_gadget/g1/functions/conn_gadget.0 /sys/kernel/config/usb_gadget/configs/c.1/conn_gadget.0
+    ln -s /sys/kernel/config/usb_gadget/g1/functions/ffs.adb /sys/kernel/config/usb_gadget/g1/configs/c.1/ffs.adb
+    ln -s /sys/kernel/config/usb_gadget/g1/functions/ss_mon.0 /sys/kernel/config/usb_gadget/g1/configs/c.1/ss_mon.0
+    ln -s /sys/kernel/config/usb_gadget/g1/functions/mtp.0 /sys/kernel/config/usb_gadget/g1/configs/c.1/ffs.mtp
+    ln -s /sys/kernel/config/usb_gadget/g1/functions/mtp.0 /sys/kernel/config/usb_gadget/g1/configs/c.1/mtp.0
+
+  mkdir /dev/usb-ffs
+    mkdir /dev/usb-ffs/adb
+    mkdir /dev/mtp
+    mount -t functionfs -o uid=phablet,gid=phablet adb /dev/usb-ffs/adb
+    mount -t functionfs -o uid=phablet,gid=phablet mtp /dev/mtp
+    chmod 775 /dev/usb-ffs
+    chown root:plugdev /dev/usb-ffs
+    chmod 775 /dev/usb-ffs/adb
+    chown root:plugdev /dev/mtp
+    chmod 660 /dev/mtp_usb
+#    write /sys/class/android_usb/android0/f_ffs/aliases adb
+#	write /sys/class/android_usb/android0/f_rndis/ethaddr 1
+    touch /dev/.usb_setup_done

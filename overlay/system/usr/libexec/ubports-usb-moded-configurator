@@ -1,0 +1,85 @@
+#!/bin/sh -eu
+
+# Copyright (C) 2022 UBports Foundation.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# This script process usb-moded's config, and fill in autodetect-able configs
+# and certain device-specific config e.g. vendor and product id. The aim is
+# to reduce the amount of configuration porters need to config (and to prevent
+# config drift due to porters start overlaying random files).
+
+# This script rely on being run as usb-moded.service's ExecStartPre, so that it
+# gets all environment variables defined in /etc/default/usb-moded.d/*.
+# TODO: do we want to use deviceinfo for various values below?
+
+CONFIG_DIR=/etc/usb-moded
+RUNTIME_CONFIG_DIR=/run/ubports-usb-moded-conf
+ANDROID_USB=/sys/class/android_usb/android0
+USB_GADGET=/sys/kernel/config/usb_gadget
+
+# These variables has to be set by porters as they vary from device to device.
+# However, we provided some defaults to ease early porting. These codes are
+# test codes from pid.codes [1], so one must properly set these values before
+# a port is considered "done".
+# NOTE: don't include '0x' in these values.
+# [1] https://pid.codes/pids/
+export IDVENDOR="${IDVENDOR:-1209}"
+export IDPRODUCT_MTP="${IDPRODUCT_MTP:-0002}"
+export IDPRODUCT_MTP_ADB="${IDPRODUCT_MTP_ADB:-0003}"
+export IDPRODUCT_RNDIS="${IDPRODUCT_RNDIS:-0004}"
+export IDPRODUCT_RNDIS_ADB="${IDPRODUCT_RNDIS_ADB:-0005}"
+
+# We have good guesses for these values, however porters can still set them.
+# Check the .vendor variant first.
+MANUFACTURER="${MANUFACTURER:-$(getprop ro.product.vendor.manufacturer)}" # e.g. "Volla"
+PRODUCT="${PRODUCT:-$(getprop ro.product.vendor.model)}" # e.g. "Phone"
+# If empty then get the normal one.
+MANUFACTURER="${MANUFACTURER:-$(getprop ro.product.manufacturer)}" # e.g. "Volla"
+PRODUCT="${PRODUCT:-$(getprop ro.product.model)}" # e.g. "Phone"
+export MANUFACTURER PRODUCT
+
+# Used for RNDIS detection only.
+CONTROLLER="${CONTROLLER:-$(getprop sys.usb.controller)}"
+if [ -z "$CONTROLLER" ]; then
+    CONTROLLER=$(ls /sys/class/udc)
+fi
+
+# These variables could be set by the porters, but in general should be left
+# to autodetection.
+        export RNDIS_IFNAME="rndis0"
+        export RNDIS_FUNCTION="rndis"
+
+
+if [ -d $USB_GADGET ]; then
+    # In case autodetection doesn't happen, and for string dirs, as usb-moded
+    # won't autocreate them.
+    mkdir -p "${USB_GADGET}/g1"
+    mkdir -p "${USB_GADGET}/g1/strings/0x409"
+    mkdir -p "${USB_GADGET}/g1/configs/c.1"
+    mkdir -p "${USB_GADGET}/g1/configs/c.1/strings/0x409"
+fi
+
+# And now, actually write config files
+mkdir -p ${RUNTIME_CONFIG_DIR} ${RUNTIME_CONFIG_DIR}/dyn-modes/
+cd $CONFIG_DIR
+for file_in in *.in dyn-modes/*.in; do
+    file_out=${file_in%.in}
+    envsubst <"$file_in" >"${RUNTIME_CONFIG_DIR}/${file_out}"
+done
