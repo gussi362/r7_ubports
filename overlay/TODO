@@ -1,0 +1,5 @@
+https://gitlab.com/ubports/porting/community-ports/android12/volla-tablet/volla-mimir/-/commit/490587bad03f13245cad4cddf16bc6b517401fd9
+
+#aod_enable in halium.yaml 
+#default read value from device is set_aod_rect 0,0,0,0 on stock 13
+#default from vendor powerhint.json fluid rom is set_aod_rect,1080,2400,0,0
