@@ -16,3 +16,16 @@ echo "fod_enable,1" > /sys/class/sec/tsp/cmd
 echo "aot_enable,1" > /sys/class/sec/tsp/cmd
 
 
+# set wifi.interface property since urfkill.conf expects that
+setprop wifi.interface wlan0
+# what to do for p2p\wlan direct interface ?
+
+#enable wireless display
+setprop debug.stagefright.c2inputsurface 1
+setprop ubuntu.widi.supported 1
+setprop vendor.wifi.dualconcurrent.interface swlan0
+# ignore second Wi-Fi interface in NetworkManager
+nmcli device set swlan0 managed false
+nmcli device set p2p-dev-swlan0 managed false
+nmcli device set p2p0 managed false
+
