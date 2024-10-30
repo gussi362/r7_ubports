@@ -11,7 +11,7 @@
   <li>Fingerprint</li>
   <li>Double tap to wake works using device-hacks ,enabling it in system gestures will make it stop!</li>
   <li>snap & winebox are added but still need testing</li>
-  <li>waydroid [read more here](https://gitlab.com/ubports/development/core/packaging/waydroid/-/issues/24)</li>
+  <li>waydroid [read more here](https://gitlab.com/ubports/development/core/packaging/waydroid/-/issues/24) </li>
 
 ## TLDR
 > other than this long list of things that doesn't work everything else works as intended .
