@@ -6,23 +6,27 @@
 
 ## Current issues:
   <li>usb-moded adb mode</li>
-  <li>Aethercast wireless display (it just dies and i don't even know where to begin)</li>
+  <li>Aethercast wireless display (currently it reports wrong pixel format after fixing camera panic,it does connect now nonetheless)</li>
   <li>Proximity sensor</li>
-  <li>Fingerprint</li>
+  <li>Fingerprint(wake screen but does nothing else)</li>
   <li>Double tap to wake works using device-hacks ,enabling it in system gestures will make it stop!</li>
   <li>snap & winebox are added but still need testing</li>
-  <li>waydroid [read more here](https://gitlab.com/ubports/development/core/packaging/waydroid/-/issues/24)</li>
+  <li>waydroid [read more here](https://gitlab.com/ubports/development/core/packaging/waydroid/-/issues/24) </li>
 
 ## TLDR
 > other than this long list of things that doesn't work everything else works as intended .
 
 ## TODO:
   <li>ci build</li>
+  <li>rebase repos for more sane commits.</li>
+  <li>move to gitlab</li>
   <li>Recovery image</li>
-  <li>upload a stable boot & system image </li>
+  <del><li>upload a working boot & rootfs image </li></del>
   <li>more tests</li>
 
-  
+# [TMP] Download latest build (flash at your own risk)
+> download boot image and rootfs from [here](https://ubports.inc-digital.com/upload/c05819fa5b9ee418a676bad447522e0a8356cd)
+> filesharing is courtisy of [axeloz](https://github.com/axeloz). you can check it out [here](https://github.com/axeloz/filesharing)  . 
 # Building Steps
 
 To build by hand, run these commands;
@@ -36,32 +40,16 @@ To build by hand, run these commands;
 # Installation
 
 To install, follow these steps;
-
-- Get the vendor image for your device
-- Wipe data and system
+- extract the zip file you downloaded .
+- install latest fluid rom. you can find it [here](https://t.me/note10literoms). 
+- push ubuntu.img to data (you can format as ext4 or keep using f2fs but not guarnteed it will be good)
+  ```
+  adb push ubuntu.img /data/ubuntu.img
+  ```
 - Flash boot.img onto boot
 ```
-fastboot flash boot out/boot.img
+flash using your recovery , make sure to take a backup of your current system 
 ```
 
-- Flash system.img onto system
-```
-fastboot flash system out/system.img
-```
-
-- Flash vendor image onto vendor
-```
-fastboot flash vendor vendor.img
-```
-
-- Enable ADB & Mount data partition
-```
-adb shell mount /data
-```
-
-- Copy ubuntu.img to /data
-```
-adb push ubuntu.img /data/
-```
 
 - Reboot the System
