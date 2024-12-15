@@ -1,8 +1,12 @@
 # Model for libdeviceinfo
-ro.product.vendor.device=r7
+ro.product.vendor.device=phone_san
 # Camera model for taken pictures
 ro.product.model=Note 10 Lite
 # MTP device name
 ro.product.vendor.model=Note 10 Lite
 # Manufacturer in host dmesg
-ro.product.vendor.manufacturer=samsung
+ro.product.vendor.manufacturer=the_lair
+debug.stagefright.c2inputsurface=1
+ro.config.vc_call_vol_steps=18
+ubuntu.unity8.interactive_blur=true
+ubuntu.widi.supported=1

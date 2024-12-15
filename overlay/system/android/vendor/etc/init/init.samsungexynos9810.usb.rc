@@ -1,1 +1,31 @@
-# Empty to not interfere with usb-moded
+on init
+    mkdir /sys/kernel/config//usb_gadget/g1
+    mkdir /sys/kernel/config//usb_gadget/g1/strings/0x409
+    mkdir /sys/kernel/config//usb_gadget/g1/sys/kernel/config/s/c.1
+    mkdir /sys/kernel/config//usb_gadget/g1/sys/kernel/config/s/c.1/strings/0x409
+#   mkdir /sys/kernel/config//usb_gadget/g1/functions/mtp.0
+#   mkdir /sys/kernel/config//usb_gadget/g1/functions/ptp.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/acm.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/uts.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/dm.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/rndis.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/conn_gadget.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/midi.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/accessory.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/audio_source.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/ncm.0
+    mkdir /sys/kernel/config//usb_gadget/g1/functions/ss_mon.0
+
+    mkdir /sys/kernel/config/usb_gadget/g1/functions/ffs.adb
+    mkdir /sys/kernel/config/usb_gadget/g1/functions/ffs.mtp
+
+
+on boot
+    symlink /sys/kernel/config/usb_gadget/g1/functions/acm.0 /sys/kernel/config/usb_gadget/g1/configs/c.1/acm.0
+    symlink /sys/kernel/config/usb_gadget/g1/functions/rndis.0 /sys/kernel/config/usb_gadget/g1/configs/c.1/rndis.0
+    symlink /sys/kernel/config/usb_gadget/g1/functions/conn_gadget.0 /sys/kernel/config/usb_gadget/configs/c.1/conn_gadget.0
+    symlink /sys/kernel/config/usb_gadget/g1/functions/ffs.adb /sys/kernel/config/usb_gadget/g1/configs/c.1/ffs.adb
+    symlink /sys/kernel/config/usb_gadget/g1/functions/ss_mon.0 /sys/kernel/config/usb_gadget/g1/configs/c.1/ss_mon.0
+
+
+

@@ -3,10 +3,8 @@ r7:
   WebkitDpr: 2.5
   PrimaryOrientation: Portrait
   PrettyName: Samsung Galaxy Note 10 Lite
-  DeviceType: phone
+  DeviceType: tablet
   DoubleTapToWake:
-    - /sys/class/sec/tsp/cmd|aod_enable|1
-    - /sys/class/sec/tsp/cmd|set_aod_rect|0,0,0,0
     - /sys/class/sec/tsp/cmd|aot_enable|0
     - /sys/class/sec/tsp/cmd|aot_enable|1
   FlashlightSysfsPath:

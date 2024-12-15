@@ -1,0 +1,79 @@
+ACTION=="add", KERNEL=="mali0", OWNER="system", GROUP="system", MODE="0666"
+ACTION=="add", KERNEL=="ion", OWNER="system", GROUP="system", MODE="0666"
+ACTION=="add", KERNEL=="ump", OWNER="system", GROUP="graphics", MODE="0666"
+ACTION=="add", KERNEL=="exynos-mem", OWNER="system", GROUP="graphics", MODE="0660"
+
+ACTION=="add", KERNEL=="media0", OWNER="system", GROUP="camera", MODE="0660"
+ACTION=="add", KERNEL=="media1", OWNER="system", GROUP="graphics", MODE="0660"
+ACTION=="add", KERNEL=="m2m1shot_scaler0", OWNER="mediacodec", GROUP="drmrpc", MODE="0660"
+ACTION=="add", KERNEL=="g2d", OWNER="system", GROUP="graphics", MODE="0660"
+ACTION=="add", KERNEL=="fimg2d", OWNER="system", GROUP="graphics", MODE="0666"
+ACTION=="add", KERNEL=="i2c-2", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="HPD", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="tsmux", OWNER="oem_5386", GROUP="graphics", MODE="0660"
+ACTION=="add", KERNEL=="repeater", OWNER="oem_5386", GROUP="graphics", MODE="0660"
+
+ACTION=="add", KERNEL=="media2", OWNER="media", GROUP="media", MODE="0660"
+ACTION=="add", KERNEL=="hdcp2", OWNER="media", GROUP="media", MODE="0660"
+ACTION=="add", KERNEL=="m2m1shot_jpeg", OWNER="media", GROUP="media", MODE="0660"
+ACTION=="add", KERNEL=="seiren", OWNER="system", GROUP="audio", MODE="0660"
+ACTION=="add", KERNEL=="mobicore", OWNER="system", GROUP="system", MODE="0700"
+ACTION=="add", KERNEL=="mobicore-user", OWNER="radio", GROUP="system", MODE="0666"
+ACTION=="add", KERNEL=="s5p-smem", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="umts_dm0", OWNER="radio", GROUP="radio", MODE="0660"
+ACTION=="add", KERNEL=="umts_router", OWNER="radio", GROUP="radio", MODE="0660"
+ACTION=="add", KERNEL=="block/platform/11120000.ufs/by-name/radio", OWNER="system", GROUP="radio", MODE="0660"
+ACTION=="add", KERNEL=="block/platform/11120000.ufs/by-name/cp_debug", OWNER="radio", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="block/platform/11120000.ufs/by-name/RADIO", OWNER="system", GROUP="radio", MODE="0660"
+ACTION=="add", KERNEL=="block/platform/11120000.ufs/by-name/CP_DEBUG", OWNER="radio", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="umts*", OWNER="system", GROUP="radio", MODE="0660"
+ACTION=="add", KERNEL=="umts_csd", OWNER="system", GROUP="loop_radio", MODE="0660"
+ACTION=="add", KERNEL=="smd4", OWNER="system", GROUP="radio", MODE="0660"
+ACTION=="add", KERNEL=="ramdump_memshare", OWNER="system", GROUP="radio", MODE="0660"
+ACTION=="add", KERNEL=="umts_ciq*", OWNER="system", GROUP="bridge_rw", MODE="0660"
+ACTION=="add", KERNEL=="drb", OWNER="system", GROUP="radio", MODE="0660"
+ACTION=="add", KERNEL=="block/platform/11120000.ufs/by-name/frp", OWNER="root", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="vertex0", OWNER="media", GROUP="media", MODE="0660"
+ACTION=="add", KERNEL=="vertex1", OWNER="media", GROUP="media", MODE="0660"
+ACTION=="add", KERNEL=="vts_fio_dev", OWNER="audioserver", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="iva_ctl", OWNER="cameraserver", GROUP="camera", MODE="0660"
+ACTION=="add", KERNEL=="score", OWNER="cameraserver", GROUP="camera", MODE="0660"
+ACTION=="add", KERNEL=="block/platform/11120000.ufs/by-name/PERSISTENT", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="block/platform/11120000.ufs/by-name/STEADY", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="block/platform/11120000.ufs/by-name/persistent", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="block/platform/11120000.ufs/by-name/steady", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="input/event*", OWNER="system", GROUP="input", MODE="0660"
+ACTION=="add", KERNEL=="ssp_data_injection", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="ssp_sensorhub", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="batch_io", OWNER="system", GROUP="system", MODE="0600"
+ACTION=="add", KERNEL=="iio:device*", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="bbd_sensor", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="bbd_control", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="bbd_packet", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="bbd_reliable", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="bbd_sio", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="bbd_patch", OWNER="system", GROUP="system", MODE="0660"
+ACTION=="add", KERNEL=="ttyBCM*", OWNER="system", GROUP="system", MODE="0660"
+#binders
+ACTION=="add", KERNEL=="hwbinder", OWNER="root", GROUP="root", MODE="0666"
+ACTION=="add", KERNEL=="vndbinder", OWNER="root", GROUP="root", MODE="0666"
+
+#v4l2
+ACTION=="add", KERNEL=="v4l-subdev*", OWNER="root", GROUP="root", MODE="0600"
+ACTION=="add", KERNEL=="video*", OWNER="root", GROUP="root", MODE="0600"
+ACTION=="add", KERNEL=="v4l2loopback", GROUP="video", MODE="0660"
+# anbox/waydroid binders
+ACTION=="add", KERNEL=="anbox-binder", OWNER="root", GROUP="root", MODE="0666"
+ACTION=="add", KERNEL=="anbox-hwbinder", OWNER="root", GROUP="root", MODE="0666"
+ACTION=="add", KERNEL=="anbox-vndbinder", OWNER="root", GROUP="root", MODE="0666"
+
+# Enable KVM for all users in phablet
+# Ultimately access is mediated by AppArmor
+KERNEL=="kvm", GROUP="phablet", MODE="0660"
+
+
+# iio-sensor-proxy
+# Set PROXIMITY_NEAR_LEVEL for iio-sensor-proxy to pick up the proximity sensor
+
+# Set the sensor type for all the types we recognise
+ACTION=="add", SUBSYSTEM=="iio", TEST=="in_proximity_raw", ENV{PROXIMITY_NEAR_LEVEL}="250"
