@@ -25,7 +25,7 @@
   <li>more tests</li>
 
 # [TMP] Download latest build (flash at your own risk)
-> download boot image and rootfs from [here](https://ubports.inc-digital.com/upload/c05819fa5b9ee418a676bad447522e0a8356cd)
+> download boot image and rootfs from [here](https://t.me/note10literoms). (search for file named bundle ,or ask )
 > filesharing is courtisy of [axeloz](https://github.com/axeloz). you can check it out [here](https://github.com/axeloz/filesharing)  . 
 # Building Steps
 
